@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhara Clean Care - GST</title>
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <style>
+        .bgradient {
+            background: linear-gradient(45deg, rgba(28, 141, 207, 0.514), rgba(9, 228, 191, 0.507));
+        }
+        .rep-bgradient {
+            background: repeating-linear-gradient(45deg, rgba(253, 208, 111, 0.253) 25%, rgba(209, 159, 250, 0.253) 75%);
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px rgba(255, 255, 255, 0.658);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-1 py-3 border border-2 border-success text-center">
+        <h1 class="text-danger py-3 border bgradient rounded text-center text-shadow">DHARA CLEAN CARE</h1>
+        <div class="rounded rep-bgradient">
+            <hr>
+            <div class='row text-center py-1'>
+                <label class="col-lg-4 my-2" for="buyer">Name : <input type="text" name="buyer" id="buyer"
+                        class='0'></label>
+                <label class="col-lg-4 my-2" for="address">Address : <input type="text" name="address" id="address"
+                        class=''></label>
+                <label class="col-lg-4 my-2" for="gst">GST No. : <input type="text" name="gst" id="gst"
+                        class=''></label>
+            </div>
+            <hr>
+            <div class="mt-4" style="overflow-x: auto;">
+                <table class="table table-responsive text-center table-bordered border-secondary">
+                    <thead class='table-info border-secondary'>
+                        <tr>
+                            <th class='col-3'>Item Name</th>
+                            <th class='col-1'>HSN Code</th>
+                            <th class='col-2'>Quantity</th>
+                            <th class='col-2'>Price(Rs.) per Quantity</th>
+                            <th class='col-2'>Total Price (Rs.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dhara Cleaning Powder-900 gram</td>
+                            <td>3825</td>
+                            <td>45 * <input type="text" name="quantity9" id="quantity9"
+                                    class="border-0 text-center w-50" placeholder="0"></td>
+                            <td id="price9"></td>
+                            <td id="totalprice9"></td>
+                        </tr>
+                        <tr>
+                            <td>Dhara Cleaning Powder-1.5 Kg</td>
+                            <td>3825</td>
+                            <td>27 * <input type="text" name="quantity" id="quantity" class="border-0 text-center w-50"
+                                    placeholder="0">
+                            </td>
+                            <td id="price"></td>
+                            <td id="totalprice"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class=' text-end'>SGST(%) : <input type="text" name="sgst" id="sgst"
+                                    class='border-0 text-center w-25' placeholder="%"></td>
+                            <td id="sgstRs"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class='text-end'>CGST(%) : <input type="text" name="cgst" id="cgst"
+                                    class='border-0 text-center w-25' placeholder="%"></td>
+                            <td id="cgstRs"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class='text-end' id="totalgst">Total GST (Rs.) :</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class='text-end fw-bold' id="grandtotal">Grand Total (Rs.) :</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+        </div>
+        <button class='btn shadow btn-primary'>Calculate</button>
+    </div>
+    <footer class="footer mt-4 text-center bg-light p-2" style="opacity: 0.4;">
+        Copyright&copy; github&commat;meetro2601
+    </footer>
+    <script>
+        let btn = document.querySelector('button')
+        let fixedPrice9 = 560
+        let fixedPrice = 540
+
+        function calculate() {
+            let quantity9 = document.querySelector('#quantity9').value
+            let quantity = document.querySelector('#quantity').value
+            let sgst = document.querySelector('#sgst').value
+            let cgst = document.querySelector('#cgst').value
+            let gst = Number(sgst) + Number(cgst)
+
+            if (quantity9 !== '' && quantity !== '' && sgst !== '' & cgst !== '') {
+
+                let price9 = fixedPrice9 / (1 + (0.01 * gst))
+                let price = fixedPrice / (1 + (0.01 * gst))
+
+                let totalprice9 = (quantity9 * price9).toFixed(2)
+                let totalprice = (quantity * price).toFixed(2)
+
+                let total9 = Number(quantity9) * fixedPrice9
+                let total = Number(quantity) * fixedPrice
+                let grandTotal = total + total9
+
+                let gstRs = (grandTotal - [grandTotal / (1 + (0.01 * gst))]).toFixed(2)
+                let sgstRs = (gstRs / 2).toFixed(2)
+                let cgstRs = (gstRs / 2).toFixed(2)
+
+                document.querySelector('#grandtotal').nextElementSibling.innerHTML = grandTotal
+
+
+                if (quantity != 0) {
+                    document.querySelector('#price').innerText = price.toFixed(2)
+                    document.querySelector('#totalprice').innerText = totalprice
+                } else {
+                    document.querySelector('#price').innerText = 0
+                    document.querySelector('#totalprice').innerText = 0
+                }
+                if (quantity9 != 0) {
+                    document.querySelector('#price9').innerText = price9.toFixed(2)
+                    document.querySelector('#totalprice9').innerText = totalprice9
+                } else {
+                    document.querySelector('#price9').innerText = 0
+                    document.querySelector('#totalprice9').innerText = 0
+                }
+
+                document.querySelector('#sgstRs').innerText = sgstRs
+                document.querySelector('#cgstRs').innerText = cgstRs
+                document.querySelector('#totalgst').nextElementSibling.innerText = gstRs
+            } else {
+                alert('Please Input Values First')
+            }
+        }
+        btn.addEventListener('click', () => {
+            calculate()
+        })
+    </script>
+</body>
+
+</html>
