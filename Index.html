@@ -11,6 +11,7 @@
         .bgradient {
             background: linear-gradient(45deg, rgba(28, 141, 207, 0.514), rgba(9, 228, 191, 0.507));
         }
+
         .rep-bgradient {
             background: repeating-linear-gradient(45deg, rgba(253, 208, 111, 0.253) 25%, rgba(209, 159, 250, 0.253) 75%);
         }
@@ -39,47 +40,68 @@
                 <table class="table table-responsive text-center table-bordered border-secondary">
                     <thead class='table-info border-secondary'>
                         <tr>
-                            <th class='col-3'>Item Name</th>
-                            <th class='col-1'>HSN Code</th>
-                            <th class='col-2'>Quantity</th>
-                            <th class='col-2'>Price(Rs.) per Quantity</th>
-                            <th class='col-2'>Total Price (Rs.)</th>
+                            <th class='col-3 align-middle'>Item Name</th>
+                            <th class='col-1 align-middle'>HSN Code</th>
+                            <th class='col-2 align-middle'>Quantity</th>
+                            <th class='col-2 align-middle'>Price(Rs.) with GST per Quantity</th>
+                            <th class='align-middle'>GST (%)</th>
+                            <th class='col-2 align-middle'>Price(Rs.) w/o GST per Quantity</th>
+                            <th class='col-2 align-middle'>Total Price(Rs.) w/o GST</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Dhara Cleaning Powder-900 gram</td>
-                            <td>3825</td>
+                            <td>34011190</td>
                             <td>45 * <input type="text" name="quantity9" id="quantity9"
                                     class="border-0 text-center w-50" placeholder="0"></td>
+                            <td><input type="text" name="price9gst" id="price9gst" class="border-0 text-center w-50"
+                                    placeholder="0"></td>
+                            <td rowspan="2" class="align-middle"><input type="text" name="gstrate" id="gstrate"
+                                    class="border-0 text-center w-100" placeholder="0"></td>
                             <td id="price9"></td>
                             <td id="totalprice9"></td>
                         </tr>
                         <tr>
                             <td>Dhara Cleaning Powder-1.5 Kg</td>
-                            <td>3825</td>
+                            <td>34011190</td>
                             <td>27 * <input type="text" name="quantity" id="quantity" class="border-0 text-center w-50"
                                     placeholder="0">
                             </td>
+                            <td><input type="text" name="pricegst" id="pricegst" class="border-0 text-center w-50"
+                                    placeholder="0">
+                            </td>
+                            <!-- <td rowspan=""><input type="text" name="quantity" id="quantity" class="border-0 text-center w-100"
+                                    placeholder="0">
+                            </td> -->
                             <td id="price"></td>
                             <td id="totalprice"></td>
                         </tr>
                         <tr>
-                            <td colspan="4" class=' text-end'>SGST(%) : <input type="text" name="sgst" id="sgst"
+                            <td colspan="4"></td>
+                            <td colspan="2" id="amount">Total Amount(Rs.) w/o GST : </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"></td>
+                            <td colspan="2" class=''>Output SGST(%) : <input type="text" name="sgst" id="sgst"
                                     class='border-0 text-center w-25' placeholder="%"></td>
                             <td id="sgstRs"></td>
                         </tr>
                         <tr>
-                            <td colspan="4" class='text-end'>CGST(%) : <input type="text" name="cgst" id="cgst"
+                            <td colspan="4"></td>
+                            <td colspan="2" class=''>Output CGST(%) : <input type="text" name="cgst" id="cgst"
                                     class='border-0 text-center w-25' placeholder="%"></td>
                             <td id="cgstRs"></td>
                         </tr>
                         <tr>
-                            <td colspan="4" class='text-end' id="totalgst">Total GST (Rs.) :</td>
+                            <td colspan="4"></td>
+                            <td colspan="2" class='' id="totalgst">Total GST (Rs.) :</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td colspan="4" class='text-end fw-bold' id="grandtotal">Grand Total (Rs.) :</td>
+                            <td colspan="4"></td>
+                            <td colspan="2" class='fw-bold' id="grandTotal">Grand Total (Rs.) :</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -93,58 +115,53 @@
         Copyright&copy; github&commat;meetro2601
     </footer>
     <script>
-        let btn = document.querySelector('button')
-        let fixedPrice9 = 560
-        let fixedPrice = 540
+        var btn = document.querySelector('button')
 
         function calculate() {
-            let quantity9 = document.querySelector('#quantity9').value
-            let quantity = document.querySelector('#quantity').value
-            let sgst = document.querySelector('#sgst').value
-            let cgst = document.querySelector('#cgst').value
-            let gst = Number(sgst) + Number(cgst)
+            var quantity9 = document.querySelector('#quantity9').value
+            var price9gst = document.querySelector('#price9gst').value
+            var quantity = document.querySelector('#quantity').value
+            var pricegst = document.querySelector('#pricegst').value
+            var gst = document.querySelector("#gstrate").value
+            var sgst = gst / 2
+            var cgst = gst / 2
+            document.querySelector("#sgst").value = sgst
+            document.querySelector("#cgst").value = cgst
 
-            if (quantity9 !== '' && quantity !== '' && sgst !== '' & cgst !== '') {
-
-                let price9 = fixedPrice9 / (1 + (0.01 * gst))
-                let price = fixedPrice / (1 + (0.01 * gst))
-
-                let totalprice9 = (quantity9 * price9).toFixed(2)
-                let totalprice = (quantity * price).toFixed(2)
-
-                let total9 = Number(quantity9) * fixedPrice9
-                let total = Number(quantity) * fixedPrice
-                let grandTotal = total + total9
-
-                let gstRs = (grandTotal - [grandTotal / (1 + (0.01 * gst))]).toFixed(2)
-                let sgstRs = (gstRs / 2).toFixed(2)
-                let cgstRs = (gstRs / 2).toFixed(2)
-
-                document.querySelector('#grandtotal').nextElementSibling.innerHTML = grandTotal
-
-
-                if (quantity != 0) {
-                    document.querySelector('#price').innerText = price.toFixed(2)
-                    document.querySelector('#totalprice').innerText = totalprice
-                } else {
-                    document.querySelector('#price').innerText = 0
-                    document.querySelector('#totalprice').innerText = 0
-                }
-                if (quantity9 != 0) {
-                    document.querySelector('#price9').innerText = price9.toFixed(2)
-                    document.querySelector('#totalprice9').innerText = totalprice9
-                } else {
-                    document.querySelector('#price9').innerText = 0
-                    document.querySelector('#totalprice9').innerText = 0
-                }
-
-                document.querySelector('#sgstRs').innerText = sgstRs
-                document.querySelector('#cgstRs').innerText = cgstRs
-                document.querySelector('#totalgst').nextElementSibling.innerText = gstRs
+            if (quantity9 == 0) {
+                var price9 = 0
             } else {
-                alert('Please Input Values First')
+                var price9 = (price9gst / (1 + (0.01 * gst))).toFixed(4)
             }
+            document.querySelector('#price9').innerText = price9
+
+            if (quantity == 0) {
+                var price = 0
+            } else {
+                var price = (pricegst / (1 + (0.01 * gst))).toFixed(4)
+            }
+            document.querySelector('#price').innerText = price
+
+            var grandTotal = (quantity9 * price9gst) + (quantity * pricegst)
+            document.querySelector("#grandTotal").nextElementSibling.innerText = grandTotal
+
+            var gstRs = (grandTotal - [grandTotal / (1 + (0.01 * gst))]).toFixed(2)
+            var sgstRs = (gstRs / 2).toFixed(2)
+            var cgstRs = (gstRs / 2).toFixed(2)
+            document.querySelector('#sgstRs').innerText = sgstRs
+            document.querySelector('#cgstRs').innerText = cgstRs
+            document.querySelector('#totalgst').nextElementSibling.innerText = gstRs
+
+            var amount = (grandTotal - gstRs).toFixed(2)
+            document.querySelector("#amount").nextElementSibling.innerText = amount
+
+            var totalprice9 = (amount - (price * quantity).toFixed(2)).toFixed(2)
+            document.querySelector('#totalprice9').innerText = totalprice9
+
+            var totalprice = (amount - (price9 * quantity9).toFixed(2)).toFixed(2)
+            document.querySelector('#totalprice').innerText = totalprice
         }
+
         btn.addEventListener('click', () => {
             calculate()
         })
