@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <title>Dhara Clean Care - Record Book</title>
+</head>
+<body>
+    <a href="./index.html"><button class="btn btn-sm btn-dark m-2"><<<</button></a>
+    <button class="btn btn-sm btn-danger m-2" onclick="clearBook()">Clear All</button>
+    <button class="btn btn-sm btn-warning m-2" onclick="print()">Print</button>
+    <div class="container text-center my-3">
+        <h3 class="p-2">Record Book</h3>
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-info align-middle">
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Buyer</th>
+                    <th>Address</th>
+                    <th>GST No.</th>
+                    <th>900gm - Quantity</th>
+                    <th>900gm - Price (Rs.)</th>
+                    <th>1.5kg - Quantity</th>
+                    <th>1.5kg - Price (Rs.)</th>
+                    <th>GST %</th>
+                    <th>GST (Rs.)</th>
+                    <th>Amount (Rs.) w/o GST</th>
+                    <th>GrandTotal (Rs.)</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+
+    for(let i=0; i < localStorage.length; i++){
+        let key = localStorage.key(i)
+        let item = localStorage.getItem(key)
+        let billObj = JSON.parse(item)
+        let [buyer,
+                address,
+                gstNum,
+                quantity9,
+                quantity,
+                price9gst,
+                pricegst,
+                gst,
+                gstRs,
+                price9,
+                price,
+                totalprice9,
+                totalprice,
+                amount,
+                grandTotal] = Object.values(billObj)
+
+        let billEntryRow = ` <tr>
+                    <td>${key}</td>
+                    <td>${buyer}</td>
+                    <td>${address}</td>
+                    <td>${gstNum}</td>
+                    <td>${quantity9}</td>
+                    <td>${totalprice9}</td>
+                    <td>${quantity}</td>
+                    <td>${totalprice}</td>
+                    <td>${gst}</td>
+                    <td>${gstRs}</td>
+                    <td>${amount}</td>
+                    <td>${grandTotal}</td>
+                </tr>`
+        
+        document.querySelector('tbody').insertAdjacentHTML("beforeend",billEntryRow)
+    }
+
+    function clearBook(){
+        localStorage.clear()
+        location.reload()
+    }
+
+</script>
+</html>

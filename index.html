@@ -28,12 +28,12 @@
         <div class="rounded rep-bgradient">
             <hr>
             <div class='row text-center py-1'>
-                <label class="col-lg-4 my-2" for="buyer">Name : <input type="text" name="buyer" id="buyer"
-                        class='0'></label>
-                <label class="col-lg-4 my-2" for="address">Address : <input type="text" name="address" id="address"
-                        class=''></label>
-                <label class="col-lg-4 my-2" for="gst">GST No. : <input type="text" name="gst" id="gst"
-                        class=''></label>
+                <label class="col-lg-4 my-2" for="buyer">Name : <input type="text" name="buyer" id="buyer" placeholder="Buyer's Name"
+                        ></label>
+                <label class="col-lg-4 my-2" for="address">Address : <input type="text" name="address" id="address" placeholder="Address"
+                        ></label>
+                <label class="col-lg-4 my-2" for="gstNum">GST No. : <input type="text" name="gstNum" id="gstNum" placeholder="GST No."
+                        ></label>
             </div>
             <hr>
             <div class="mt-4" style="overflow-x: auto;">
@@ -71,9 +71,7 @@
                             <td><input type="text" name="pricegst" id="pricegst" class="border-0 text-center w-50"
                                     placeholder="0">
                             </td>
-                            <!-- <td rowspan=""><input type="text" name="quantity" id="quantity" class="border-0 text-center w-100"
-                                    placeholder="0">
-                            </td> -->
+                            
                             <td id="price"></td>
                             <td id="totalprice"></td>
                         </tr>
@@ -84,14 +82,15 @@
                         </tr>
                         <tr>
                             <td colspan="4"></td>
-                            <td colspan="2" class=''>Output SGST(%) : <input type="text" name="sgst" id="sgst"
-                                    class='border-0 text-center w-25' placeholder="%"></td>
+                            <td colspan="2" class=''>Output SGST :
+                                    <span class="p-1" id='sgst'> </span>%</td>
                             <td id="sgstRs"></td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>
-                            <td colspan="2" class=''>Output CGST(%) : <input type="text" name="cgst" id="cgst"
-                                    class='border-0 text-center w-25' placeholder="%"></td>
+                            <td colspan="2" class=''>Output CGST :
+                                <span class="p-1" id='cgst'> </span>%
+                            </td>
                             <td id="cgstRs"></td>
                         </tr>
                         <tr>
@@ -109,63 +108,12 @@
             </div>
             <hr>
         </div>
-        <button class='btn shadow btn-primary'>Calculate</button>
+        <button class='btn shadow btn-primary calc'>Calculate</button>
+        <a href="./recordbook.html"><button class="btn shadow btn-secondary">Bill Book</button></a>
     </div>
     <footer class="footer mt-4 text-center bg-light p-2" style="opacity: 0.4;">
         Copyright&copy; github&commat;meetro2601
     </footer>
-    <script>
-        var btn = document.querySelector('button')
-
-        function calculate() {
-            var quantity9 = document.querySelector('#quantity9').value
-            var price9gst = document.querySelector('#price9gst').value
-            var quantity = document.querySelector('#quantity').value
-            var pricegst = document.querySelector('#pricegst').value
-            var gst = document.querySelector("#gstrate").value
-            var sgst = gst / 2
-            var cgst = gst / 2
-            document.querySelector("#sgst").value = sgst
-            document.querySelector("#cgst").value = cgst
-
-            if (quantity9 == 0) {
-                var price9 = 0
-            } else {
-                var price9 = (price9gst / (1 + (0.01 * gst))).toFixed(4)
-            }
-            document.querySelector('#price9').innerText = price9
-
-            if (quantity == 0) {
-                var price = 0
-            } else {
-                var price = (pricegst / (1 + (0.01 * gst))).toFixed(4)
-            }
-            document.querySelector('#price').innerText = price
-
-            var grandTotal = (quantity9 * price9gst) + (quantity * pricegst)
-            document.querySelector("#grandTotal").nextElementSibling.innerText = grandTotal
-
-            var gstRs = (grandTotal - [grandTotal / (1 + (0.01 * gst))]).toFixed(2)
-            var sgstRs = (gstRs / 2).toFixed(2)
-            var cgstRs = (gstRs / 2).toFixed(2)
-            document.querySelector('#sgstRs').innerText = sgstRs
-            document.querySelector('#cgstRs').innerText = cgstRs
-            document.querySelector('#totalgst').nextElementSibling.innerText = gstRs
-
-            var amount = (grandTotal - gstRs).toFixed(2)
-            document.querySelector("#amount").nextElementSibling.innerText = amount
-
-            var totalprice9 = (amount - (price * quantity).toFixed(2)).toFixed(2)
-            document.querySelector('#totalprice9').innerText = totalprice9
-
-            var totalprice = (amount - (price9 * quantity9).toFixed(2)).toFixed(2)
-            document.querySelector('#totalprice').innerText = totalprice
-        }
-
-        btn.addEventListener('click', () => {
-            calculate()
-        })
-    </script>
 </body>
-
+<script src="./index.js"></script>
 </html>
